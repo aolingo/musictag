@@ -14,6 +14,7 @@ import (
 
 var logFile *os.File
 var files []string
+var reservedChars = [9]string{"\"", "<", ">", ":", "/", "|", "\\", "?", "*"}
 
 // renameSongs will replace the name of all mp3 files with
 // the song title in its ID3 metadata tag, if it has one
@@ -49,8 +50,13 @@ func renameSongs() {
 
 		// rename file if a title can be found from the file's ID3 tag
 		if m.Title() != "" {
+
+			// Handle case where title has illegal chars eg. Kaleo "Save Yourself".mp3
+			// will cause program to crash when renaming file to the song title
+			title := cleanTitle(m.Title())
+
 			// retrive song title from tag and do some cleaning before renaming
-			newbase := strings.TrimSpace(m.Title())
+			newbase := strings.TrimSpace(title)
 			if !strings.Contains(newbase, ".mp3") {
 				newbase += ".mp3"
 			}
@@ -77,9 +83,21 @@ func renameSongs() {
 		fmt.Printf("Succesfully renamed all detected songs, results are logged in results.txt\n")
 	} else {
 		skipped := len(files) - renameCount
-		fmt.Printf("Successfully renamed %d songs, skipped %d files due to incomplete info in file's metadata\n", renameCount, skipped)
+		fmt.Printf("Renamed %d songs, skipped %d songs due to incomplete ID3 tag or already named\n", renameCount, skipped)
 		fmt.Println("File renaming results are logged in results.txt")
 	}
+}
+
+// cleanTitle checks and removes if inputted title string contains reserved characters
+// for file and folder names in Windows such as colons and double quotes
+func cleanTitle(title string) string {
+	var newTitle string
+	for _, symbol := range reservedChars {
+		if strings.ContainsAny(title, symbol) {
+			newTitle = strings.ReplaceAll(title, symbol, "")
+		}
+	}
+	return newTitle
 }
 
 // visit is the helper walkFn called by filepath.Walk,
