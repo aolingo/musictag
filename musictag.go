@@ -80,7 +80,7 @@ func renameSongs() {
 	bar.Finish()
 
 	if renameCount == len(files) {
-		fmt.Printf("Succesfully renamed all detected songs, results are logged in results.txt\n")
+		fmt.Printf("Successfully renamed all detected songs, results are logged in results.txt\n")
 	} else {
 		skipped := len(files) - renameCount
 		fmt.Printf("Renamed %d songs, skipped %d songs due to incomplete ID3 tag or already named\n", renameCount, skipped)
@@ -91,10 +91,10 @@ func renameSongs() {
 // cleanTitle checks and removes if inputted title string contains reserved characters
 // for file and folder names in Windows such as colons and double quotes
 func cleanTitle(title string) string {
-	var newTitle string
+	newTitle := title // make a copy of title
 	for _, symbol := range reservedChars {
 		if strings.ContainsAny(title, symbol) {
-			newTitle = strings.ReplaceAll(title, symbol, "")
+			newTitle = strings.ReplaceAll(title, symbol, " ")
 		}
 	}
 	return newTitle
@@ -116,8 +116,8 @@ func visit(path string, info os.FileInfo, err error) error {
 func main() {
 	// First element in os.Args is always the program name,
 	// 2nd argument = name of the iPod music directory
-	if len(os.Args) < 2 {
-		fmt.Println("Missing parameter, provide file directory")
+	if len(os.Args) != 2 {
+		fmt.Println("Wrong parameters, please provide a valid file directory name")
 		return
 	}
 
