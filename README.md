@@ -1,4 +1,5 @@
 # Music Tag
+[![Go Report Card](https://goreportcard.com/badge/github.com/aolingo/musictag)](https://goreportcard.com/report/github.com/aolingo/musictag)
 
 A personal CLI tool to decode song names from old Apple devices. 
 
