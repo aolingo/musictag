@@ -5,18 +5,21 @@ A personal CLI tool to decode song names from old Apple devices.
 
 Read the blog post for more info: https://www.danielgong.com/project/mp3meta/
 
-## Install
+## Building
+To download the project, run `go get github.com/aolingo/musictag`
 
-```sh
-go get github.com/aolingo/musictag
-```
+The project can be then found in your `$GOPATH/src/<import-path> folder`. 
+
+In Windows for example, it will most likely be in `C:\users\(you)\go\src\github.com\OpenDiablo2\OpenDiablo2`
+
+To build this project, run `go build` from the project root folder.
 
 ## Usage
-After compiling into executable, run the program and input the path of directory containing the mp3 files
+After building or downloading the executable, run the program and input the path of the directory containing the mp3 files
 
 `./musictag.exe input_path`
 
-For example, parse and rename all the songs in a directory named music
+For example, parse and rename all the songs in a directory named `music`
 
 ```sh
 ./musictag.exe music
